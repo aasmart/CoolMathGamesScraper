@@ -18,13 +18,18 @@ public class Main {
 
         List<Game> games = new ArrayList<>();
         for(Element e : gameRows) {
-            if(e.getElementsByClass("game-title").size() > 0)
+            if(e.getElementsByClass("game-title").size() > 0) {
+                // Get the game title element
+                Element gameTitleElement = e.getElementsByClass("game-title").get(0).getAllElements().get(1);
                 games.add(new Game(
-                        // Get the name of the game
-                        e.getElementsByClass("game-title").get(0).getAllElements().get(1).text(),
+                        // Get the name
+                        gameTitleElement.text(),
+                        // Create the hyperlink
+                        "https://www.coolmathgames.com" + gameTitleElement.attributes().get("href"),
                         // Detect if it has the flash icon
                         e.getElementsByClass("icon-gamethumbnail-all-game-pg test").size() > 0
                 ));
+            }
         }
 
         try {
