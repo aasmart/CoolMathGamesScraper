@@ -64,7 +64,7 @@ public class GoogleSheets {
     public static void writeToSheet(String spreadsheetId, List<Game> games) throws IOException, GeneralSecurityException {
         // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        final String range = "Games!A2:C";
+        final String range = "Games!A2:D";
         Sheets service = new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(APPLICATION_NAME)
                 .build();

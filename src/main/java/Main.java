@@ -17,14 +17,19 @@ public class Main {
         Elements gameRows = doc.body().getElementsByClass("views-row");
 
         List<Game> games = new ArrayList<>();
+        int gameNum = 0;
         for(Element e : gameRows) {
             if(e.getElementsByClass("game-title").size() > 0) {
                 // Get the game title element
                 Element gameTitleElement = e.getElementsByClass("game-title").get(0).getAllElements().get(1);
                 String hyperlink = "https://www.coolmathgames.com" + gameTitleElement.attributes().get("href");
 
+                // Get the game's page
                 Document gamePage = Jsoup.connect(hyperlink).get();
+
+                // Get Ratings and Votes
                 Elements ratings = gamePage.getElementsByClass("rating-val");
+                Elements votes = gamePage.getElementsByClass("cmg_game_tot_cnt");
                 games.add(new Game(
                         // Get the name
                         gameTitleElement.text(),
@@ -32,8 +37,12 @@ public class Main {
                         // Detect if it has the flash icon
                         e.getElementsByClass("icon-gamethumbnail-all-game-pg test").size() > 0,
                         // Get the rating
-                        ratings.size() > 0 ? ratings.get(0).text() : "0.0"
+                        ratings.size() > 0 ? ratings.get(0).text() : "0.0",
+                        votes.size() > 0 ? votes.get(0).text().replaceAll("(,|Votes)", "") : "0"
                 ));
+
+                if(++gameNum % 50 == 0)
+                    System.out.println("Game #" + gameNum + " read...");
             }
         }
 
