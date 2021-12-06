@@ -24,6 +24,7 @@ public class Main {
                 String hyperlink = "https://www.coolmathgames.com" + gameTitleElement.attributes().get("href");
 
                 Document gamePage = Jsoup.connect(hyperlink).get();
+                Elements ratings = gamePage.getElementsByClass("rating-val");
                 games.add(new Game(
                         // Get the name
                         gameTitleElement.text(),
@@ -31,7 +32,7 @@ public class Main {
                         // Detect if it has the flash icon
                         e.getElementsByClass("icon-gamethumbnail-all-game-pg test").size() > 0,
                         // Get the rating
-                        gamePage.getElementsByClass("rating-val").get(0).text();
+                        ratings.size() > 0 ? ratings.get(0).text() : "0.0"
                 ));
             }
         }
