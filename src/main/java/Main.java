@@ -21,13 +21,18 @@ public class Main {
             if(e.getElementsByClass("game-title").size() > 0) {
                 // Get the game title element
                 Element gameTitleElement = e.getElementsByClass("game-title").get(0).getAllElements().get(1);
+                String hyperlink = "https://www.coolmathgames.com" + gameTitleElement.attributes().get("href");
+
+                Document gamePage = Jsoup.connect(hyperlink).get();
+                Elements ratings = gamePage.getElementsByClass("rating-val");
                 games.add(new Game(
                         // Get the name
                         gameTitleElement.text(),
-                        // Create the hyperlink
-                        "https://www.coolmathgames.com" + gameTitleElement.attributes().get("href"),
+                        hyperlink,
                         // Detect if it has the flash icon
-                        e.getElementsByClass("icon-gamethumbnail-all-game-pg test").size() > 0
+                        e.getElementsByClass("icon-gamethumbnail-all-game-pg test").size() > 0,
+                        // Get the rating
+                        ratings.size() > 0 ? ratings.get(0).text() : "0.0"
                 ));
             }
         }
